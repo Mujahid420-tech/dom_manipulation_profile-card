@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Profile Card</title>
+  <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(circle at 20% 20%, #d0f0ff, #f0faff);
+        background-size: 400% 400%;
+        animation: bubbleFlow 20s ease infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    @keyframes bubbleFlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    #profileCard {
+        width: 320px;
+        padding: 25px;
+        border-radius: 15px;
+        background-color: #ffffffcc;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        position: absolute;
+        cursor: grab;
+    }
+
+    #profileCard:active {
+        transform: scale(1.02);
+        cursor: grabbing;
+        background-color: chartreuse;
+    }
+
+    .active-status {
+        background-color: darkgreen;
+    }
+    
+    img {
+        border-radius: 50%;
+        margin-bottom: 15px;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+    img:hover {
+        transform: scale(1.1);
+    }
+
+    h2 {
+        margin: 10px 0 5px;
+        font-size: 1.5em;
+        color: #333;
+    }
+
+    p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    button {
+        margin: 6px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        background-color: #00aaff;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        background-color: #0090dd;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="profileCard">
+    <img id="profileImage" src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6" alt="Profile Image" />
+    <h2 id="profileName">Mujahid Ariefdien</h2>
+    <p id="profileRole">Cybersecurity Specialist</p>
+    <p id="profileBio">Fascinated about protecting data, and how to keep things secured without being able to get hacked.</p>
+    <button id="updateNameBtn">Update Name</button>
+    <button id="updateRoleBtn">Update Role</button>
+    <button id="toggleStatusBtn">Toggle Active Status</button>
+    <button id="changeImageBtn">Change Image</button>
+  </div>
+
+  <script>
+    const profileName = document.getElementById('profileName');
+    const profileRole = document.getElementById('profileRole');
+    const profileCard = document.getElementById('profileCard');
+    const profileImage = document.getElementById('profileImage');
+
+    document.getElementById('updateNameBtn').addEventListener('click', () => {
+    const newName = prompt('Enter new name:');
+        if (newName) profileName.textContent = newName;
+});
+
+document.getElementById('updateRoleBtn').addEventListener('click', () => {
+  const newRole = prompt('Enter new role:');
+  if (newRole) profileRole.textContent = newRole;
+});
+
+document.getElementById('toggleStatusBtn').addEventListener('click', () => {
+  profileCard.classList.toggle('active-status');
+});
+
+document.getElementById('changeImageBtn').addEventListener('click', () => {
+  const newImageUrl = prompt('Enter new image URL:');
+  if (newImageUrl) profileImage.src = newImageUrl;
+});
+
+let isDragging = false;
+let offsetX, offsetY;
+
+profileCard.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  offsetX = e.clientX - profileCard.offsetLeft;
+  offsetY = e.clientY - profileCard.offsetTop;
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (isDragging) {
+    profileCard.style.left = `${e.clientX - offsetX}px`;
+    profileCard.style.top = `${e.clientY - offsetY}px`;
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+  </script>
+
+</body>
+</html>
